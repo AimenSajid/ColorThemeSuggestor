@@ -1,8 +1,11 @@
 {
-  "name": "colorpicker",
+  "name": "colorthemesuggestor",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Pick a base color and a harmony rule to generate a matching color palette.",
+  "author": "Aimen Sajid",
+  "license": "ISC",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,24 +1,60 @@
 import { useState } from 'react'
-import { createRoot } from 'react-dom/client'
 import './Header.css'
 
-function Header(props) {
- const colorThemes = ['monochrome','monochrome-dark','monochrome-light','analogic','complement','analogic-complement','triad','quad']
- const [colorVal, setColorVal] = useState('');
- const [colorTheme, setColorTheme] = useState('');
- const renderOptions = colorThemes.map((theme, index)=><option key={index} value={theme}>{theme.charAt(0).toUpperCase() + theme.slice(1)}</option>)
-  const handleButton =  (e) =>{
+const COLOR_THEMES = [
+  'monochrome',
+  'monochrome-dark',
+  'monochrome-light',
+  'analogic',
+  'complement',
+  'analogic-complement',
+  'triad',
+  'quad',
+]
+
+// "analogic-complement" -> "Analogic complement"
+const formatTheme = (theme) => {
+  const words = theme.replace(/-/g, ' ')
+  return words.charAt(0).toUpperCase() + words.slice(1)
+}
+
+function Header({ buttonHandler, defaultColor, defaultTheme }) {
+  // Seeded to match what the controls actually display, so submitting without
+  // touching them sends the visible values rather than empty strings.
+  const [colorVal, setColorVal] = useState(defaultColor)
+  const [colorTheme, setColorTheme] = useState(defaultTheme)
+
+  const handleButton = (e) => {
     e.preventDefault()
-    props.buttonHandler(colorVal,colorTheme)
+    buttonHandler(colorVal, colorTheme)
   }
- return (
-    <div className='header'>
-        <input type='color' name='picker' onInput={(e)=>{setColorVal(e.target.value)
-        }}/>
-        <select name='colorThemes'  onChange={(e)=> setColorTheme(e.target.value)}>
-          {renderOptions}
-        </select>
-        <button name='getScheme' onClick={handleButton}>Get color scheme</button>
+
+  return (
+    <div className="header">
+      <input
+        type="color"
+        name="picker"
+        aria-label="Base color"
+        value={colorVal}
+        onChange={(e) => setColorVal(e.target.value)}
+      />
+
+      <select
+        name="colorThemes"
+        aria-label="Color theme"
+        value={colorTheme}
+        onChange={(e) => setColorTheme(e.target.value)}
+      >
+        {COLOR_THEMES.map((theme) => (
+          <option key={theme} value={theme}>
+            {formatTheme(theme)}
+          </option>
+        ))}
+      </select>
+
+      <button name="getScheme" onClick={handleButton}>
+        Get color scheme
+      </button>
     </div>
   )
 }
